@@ -25,7 +25,9 @@ def get_session_factory():
 
 
 # Module-level session factory
-SessionFactory = get_session_factory()
+_engine = get_engine()
+Base.metadata.create_all(bind=_engine)  # Ensure tables exist
+SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=_engine)
 
 
 def get_db() -> Session:
